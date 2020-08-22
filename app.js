@@ -6,7 +6,9 @@ var gameActive = true;
 //my game start with mr.kaaziraz as X
 var currentPlayer = "X";
 var gameState = ["", "", "", "", "", "", "", "", ""];
-
+var recordwin = [];
+var nextround = document.getElementById('next-round');
+var drawstatus = "DR";
 var winningMessage = function winningMessage() {
   return "Player ".concat(currentPlayer, " has won!");
 };
@@ -30,7 +32,6 @@ document.querySelectorAll('.cell').forEach(function (cell) {
 document.querySelector('.game-restart').addEventListener('click', handleRestartGame);
 //select player 
 function handleCellClick(clickedCellEvent) {
-	/* clicked html element in a variable */
 var clickedCell = clickedCellEvent.target;
 //which cell is clicked
 var clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
@@ -69,6 +70,7 @@ var clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
   
 	if (roundWon) {
 	  statusDisplay.innerHTML = winningMessage();
+	  recordwin.push(currentPlayer);
 	  
 	  gameActive = false;
 	  return;
@@ -78,6 +80,7 @@ var clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
 	if (roundDraw) {
 	  statusDisplay.innerHTML = drawMessage();
 	  gameActive = false;
+	  recordwin.push(drawstatus);
 	  return;
 	}
   
@@ -98,3 +101,14 @@ function handlePlayerChange() {
 	  return cell.innerHTML = "";
 	});
   }
+  function handleRecord (){
+	  if (recordwin.length < 5){
+	  handleRestartGame();
+	  document.getElementById('game-recorde').innerHTML ="Result total : " +recordwin.toString()+'<span><i class="las la-fast-forward"></i></span>';
+	  return ;
+	}
+	document.getElementById('game-recorde').innerHTML ="Result total : " +recordwin.toString()+'<span><i class="las la-stop-circle"></i></span>'
+  }
+nextround.onclick = function(){
+	handleRecord();
+};
